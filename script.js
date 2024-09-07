@@ -1,4 +1,5 @@
 (() => {
+    let processing = false;
     class Item{
         constructor(name, space = true, chance = 100){
             this.name = name;
@@ -48,9 +49,10 @@
 
 
     function generate(){
+        processing = true;
         const maxLN = 10; //maximum naxadasutyun
         const minLN = 2;
-        const arr = [i1, i2, i3];
+        const arr = [i1, i2, i3, i7, i8, i9, i10];
         const length = minLN + Math.floor(Math.random() * (maxLN - minLN));
         let genText = "";
         function selectRandom(prev){
@@ -136,6 +138,9 @@
 
 
     function sendMessage() {
+        if(processing){
+            return;
+        }
         const message = userInput.value.trim();
         if (message !== '') {
             appendMessage('user', message, "user");
@@ -174,6 +179,7 @@
                     if(i === message.length){
                         clearInterval(interval);
                         document.getElementById("p" + id).innerText = message;
+                        processing = false;
                     }
                 }, 50)
             }, 3000)
@@ -182,8 +188,10 @@
     }
 
     function getResponse(message) {
+        if(processing){
+            return;
+        }
         const generated = generate();
-
         setTimeout(() => appendMessage(name, generated, "bangpt"), 1000);
     }
 })()
